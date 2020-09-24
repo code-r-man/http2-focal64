@@ -14,4 +14,4 @@
 define('WP_USE_THEMES', true);
 
 /** Loads the WordPress Environment and Template */
-require( '{{ vccw.wp_siteurl }}/wp-blog-header.php' );
+require( '{{ settings.wp_siteurl }}/wp-blog-header.php' );

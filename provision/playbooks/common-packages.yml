@@ -15,4 +15,8 @@
         - net-tools
         - software-properties-common
         - ruby-full
-        
+        - python3-pip
+
+  # Install pyOpenSSL python library
+  - name: Install pyOpenSSL
+    shell: pip3 install pyOpenSSL

@@ -40,8 +40,7 @@ Vagrant.configure("2") do |config|
     vb.name = _conf['hostname']
   end
 
-
-  puts "_conf: #{_conf}"
+  # puts "_conf: #{_conf}"
 
   # Hostname
   config.vm.hostname = 'dev.wordpress'

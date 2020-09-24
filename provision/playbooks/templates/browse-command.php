@@ -23,9 +23,9 @@ $browse_command = function( $_, $assoc_args ) {
 	$wp_admin = \WP_CLI\Utils\get_flag_value( $assoc_args, 'wp-admin' );
 
 	if ( true === $wp_admin ) {
-		$url = 'http://{{ vccw.hostname }}/wp-admin/';
+		$url = 'http://{{ settings.hostname }}/wp-admin/';
 	} else {
-		$url = 'http://{{ vccw.hostname }}/';
+		$url = 'http://{{ settings.hostname }}/';
 	}
 
 	passthru( $exec . ' ' . escapeshellarg( $url ) );

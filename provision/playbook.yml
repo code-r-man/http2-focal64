@@ -28,3 +28,10 @@
 # 2.3 Mailcatcher
 - import_playbook: playbooks/mailcatcher.yml
 
+# 3.0 SYSTEM INSTALL (WORDPRESS)
+# =============================================================================
+- import_playbook: playbooks/wordpress.yml
+
+# 4.0 POST INSTALL
+# =============================================================================
+- import_playbook: playbooks/post-install.yml

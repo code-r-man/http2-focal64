@@ -1,6 +1,6 @@
-define( 'JETPACK_DEV_DEBUG', {{ vccw.wp_debug }} );
-define( 'WP_DEBUG', {{ vccw.wp_debug }} );
-define( 'FORCE_SSL_ADMIN', {{ vccw.force_ssl_admin }} );
-define( 'SAVEQUERIES', {{ vccw.savequeries }} );
+define( 'JETPACK_DEV_DEBUG', {{ settings.wp_debug }} );
+define( 'WP_DEBUG', {{ settings.wp_debug }} );
+define( 'FORCE_SSL_ADMIN', {{ settings.force_ssl_admin }} );
+define( 'SAVEQUERIES', {{ settings.savequeries }} );
 
-{{ vccw.extra_wp_config }}
+{{ settings.extra_wp_config }}

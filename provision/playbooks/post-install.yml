@@ -1,0 +1,12 @@
+- hosts: all
+  become: yes
+  vars:
+    hostname: "{{ settings.hostname }}"
+
+  tasks:
+  
+  # POST-INSTALL MESSAGES
+  - debug:
+      msg:
+      - "You can access the site by navigating to https://{{ hostname }}"
+      - "Self-signed certificate authority (CA) key can be found in the VM at 'home/vagrant/cacert.pem'"

@@ -34,7 +34,7 @@ version: latest
 lang: en_US
 title: Welcome to the Wordpress
 multisite: false
-rewrite_structure: /archives/%post_id%
+rewrite_structure: '/%year%/%monthnum%/%postname%/'
 
 #
 # WordPress Path
@@ -63,7 +63,7 @@ db_pass: wordpress
 # Plugin's slug or url to the plugin's slug.
 #
 plugins:
-- logbook
+# - logbook
 
 #
 # WordPress Default Theme

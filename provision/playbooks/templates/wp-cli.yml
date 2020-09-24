@@ -1,4 +1,4 @@
 require:
   - wp-cli/browse-command.php
-@{{ vccw.hostname }}:
-  ssh: vagrant:{{ vccw.hostname }}:{{ vccw.document_root }}
+@{{ settings.hostname }}:
+  ssh: vagrant:{{ settings.hostname }}:{{ settings.document_root }}
