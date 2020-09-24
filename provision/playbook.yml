@@ -1,7 +1,12 @@
 ---
-# PHP
+
+# 1.0 BASE
+# =============================================================================
+# 1.1 PHP
 - import_playbook: playbooks/php.yml
-# Apache2
+# 1.2 Apache2
 - import_playbook: playbooks/server.yml
-# SSL Certificates
+# 1.3 SSL Certificates
 - import_playbook: playbooks/ssl.yml
+# 1.4 MySQL
+- import_playbook: playbooks/mysql.yml

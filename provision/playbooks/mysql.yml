@@ -1,0 +1,42 @@
+- hosts: all
+  become: yes
+  vars:
+    hostname: dev.wordpress
+    document_root: /var/www/html
+    mysql_root_pass: wordpress
+
+  tasks:
+
+  # MySQL
+  # Set MySQL root password
+  - name: Set MySQL root password before installing
+    debconf:
+      name: mysql-server
+      question: mysql-server/root_password
+      value: "{{mysql_root_pass | quote}}"
+      vtype: password
+  # Confirm MySQL root password
+  - name: Confirm MySQL root password before installing
+    debconf:
+      name: mysql-server
+      question: mysql-server/root_password_again
+      value: "{{mysql_root_pass | quote}}"
+      vtype: password
+  # Install MySQL
+  - name: Install MySQL
+    apt: 
+      state: latest
+      update_cache: yes
+      pkg:
+        - mysql-server
+  - name: Make sure MySQL is running
+    service:
+      name: mysql
+      state: started
+      enabled: true
+
+  # handlers:
+  #   - name: restart apache
+  #     action: service name=apache2 state=restarted
+  #   - name: restart mysql
+  #     action: service name=mysql state=restarted
