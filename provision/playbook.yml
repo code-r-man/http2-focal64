@@ -1,4 +1,6 @@
 ---
+# PHP
+- import_playbook: playbooks/php.yml
 # Apache2
 - import_playbook: playbooks/server.yml
 # SSL Certificates

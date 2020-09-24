@@ -1,12 +1,18 @@
 - hosts: all
   become: yes
-  tasks:
+  vars:
+    hostname: dev.wordpress
+    document_root: /var/www/html
 
+  tasks:
   # APACHE2
   - name: Install apache2 server
     apt:
-      pkg: apache2
       state: latest
+      update_cache: yes
+      pkg:
+        - apache2
+        - php7.4-fpm
 
   # APACHE2 MODULES
   - name: Activate module rewrite (apache2)
@@ -17,7 +23,7 @@
     apache2_module:
       state: present
       name: ssl
-  # # Flynt requirements
+  # Flynt requirements
   - name: Activate module expires (apache2)
     apache2_module:
       state: present
@@ -58,6 +64,18 @@
     apache2_module:
       state: present
       name: proxy
+  # Flynt requirements ./end
+
+  # HTTP2 requirements
+  - name: Deactivate module php7.4 (apache2)
+    apache2_module:
+      state: absent
+      name: php7.4
+  - name: Deactivate module mpm_prefork (apache2)
+    command: a2dismod mpm_prefork
+    become: yes
+  - name: Activate module mpm_event (apache2)
+    command: a2enmod mpm_event
   - name: Activate module proxy_fcgi (apache2)
     apache2_module:
       state: present
@@ -66,8 +84,24 @@
     apache2_module:
       state: present
       name: setenvif
-  # Flynt requirements ./end
-
+    become: yes
+  - name: Activate module php7.4-fpm (apache2)
+    shell: a2enconf php7.4-fpm
+    become: yes
+  - name: Start PHP7.4-FPM
+    command: systemctl start php7.4-fpm
+    become: yes
+  - name: Add to startup PHP7.4-FPM
+    command: systemctl enable php7.4-fpm
+    become: yes
+  - name: Enable PHP7.4-FPM as apache handler
+    command: a2enconf php7.4-fpm
+    become: yes
+  - name: activate module HTTP2 (apache2)
+    apache2_module:
+      state: present
+      name: http2
+  # HTTP2 requirements ./end
 
   # START APACHE2
   - name: Make sure apache is running
@@ -82,7 +116,7 @@
     become: yes
 
   handlers:
-    - name: restart-apache
+    - name: restart apache
       action: service name=apache2 state=restarted
-    - name: restart-mysql
+    - name: restart mysql
       action: service name=mysql state=restarted

@@ -2,16 +2,19 @@
   become: yes
   vars:
     hostname: dev.wordpress
+    document_root: /var/www/html
 
   tasks:
 
+  # SSL CERTIFICATES
   - name: Create SSL dir
     become: yes
     file:
       path: /etc/apache2/ssl
       state: directory
 
-  # Check if the keys have already been created
+  # Check if the keys have already been created and save result in 'key'
+  # variable
   - name: Check if the key file already exists
     stat:
       path: /etc/apache2/ssl/{{ hostname }}.key
@@ -63,6 +66,7 @@
       mode: 0775
     when: not key.stat.exists
 
+  # Create folders fo the CA
   - name: Create CA folders
     file:
       path: "{{ item }}"
@@ -117,30 +121,26 @@
     shell: a2enconf mutex-file.conf
     when: not key.stat.exists
 
-  # Restart apache
-  - name: Reload apache settings
+  # SETUP DEFAULT SITE CONFIG
+  - name: Place /etc/apache2/sites-available/site.conf
     become: yes
-    shell: systemctl reload apache2
-
-  - name: Restart apache
-    become: yes
-    service: name=apache2 state=restarted
-
-
-  # START APACHE2
-  - name: Make sure apache is running
-    service:
-      name: apache2
-      state: started
-      enabled: true
+    template:
+      src: templates/site.conf
+      dest: /etc/apache2/sites-available/000-default.conf
 
   # RELOAD APACHE2
   - name: Reload apache configuration
     command: systemctl restart apache2
     become: yes
 
+  # RESTART APACHE2
+  - name: Reload apache configuration
+    service:
+      name: apache2
+      state: restarted
+      
   handlers:
-    - name: restart-apache
+    - name: restart apache
       action: service name=apache2 state=restarted
-    - name: restart-mysql
+    - name: restart mysql
       action: service name=mysql state=restarted

@@ -1,0 +1,28 @@
+- hosts: all
+  become: yes
+  vars:
+    hostname: dev.wordpress
+    document_root: /var/www/html
+
+  tasks:
+  
+  # INSTALL PHP
+  - name: Install PHP
+    apt:
+      state: latest
+      update_cache: yes
+      pkg:
+        - php
+        - php-cli
+        - php-fpm
+        - php-json
+        - php-pdo
+        - php-mysql
+        - php-zip
+        - php-gd 
+        - php-mbstring
+        - php-curl
+        - php-xml
+        - php-pear
+        - php-bcmath
+        
