@@ -2,11 +2,22 @@
 
 # 1.0 BASE
 # =============================================================================
-# 1.1 PHP
+# 1.1 Common packages
+- import_playbook: playbooks/common-packages.yml
+
+# 1.2 PHP
 - import_playbook: playbooks/php.yml
-# 1.2 Apache2
+
+# 1.3 Apache2
 - import_playbook: playbooks/server.yml
-# 1.3 SSL Certificates
+
+# 1.4 SSL Certificates
 - import_playbook: playbooks/ssl.yml
-# 1.4 MySQL
+
+# 1.5 MySQL
 - import_playbook: playbooks/mysql.yml
+
+# 2.0 MIDDLEWARE
+# =============================================================================
+# 2.1 Composer
+- import_playbook: playbooks/composer.yml

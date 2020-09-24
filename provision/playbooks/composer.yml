@@ -1,0 +1,22 @@
+- hosts: all
+  become: yes
+  vars:
+    hostname: dev.wordpress
+    document_root: /var/www/html
+
+  tasks:
+  
+  # INSTALL COMPOSER
+  - name: Get composer
+    command: php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    become: yes
+  - name: Install composer
+    become: yes
+    command: php composer-setup.php
+  - name: Clean up composer installation
+    command: php -r "unlink('composer-setup.php');"
+    become: yes
+  - name: Make composer available locally
+    command: mv composer.phar /usr/local/bin/composer
+    become: yes
+        

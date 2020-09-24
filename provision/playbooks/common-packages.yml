@@ -1,0 +1,17 @@
+- hosts: all
+  become: yes
+
+  tasks:
+  
+  - name: Install common packages
+    apt:
+      state: latest
+      update_cache: yes
+      pkg:
+        - curl
+        - git
+        - jq
+        - libsqlite3-dev
+        - net-tools
+        - software-properties-common
+        
