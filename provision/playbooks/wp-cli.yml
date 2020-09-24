@@ -1,0 +1,14 @@
+- hosts: all
+  become: yes
+
+  tasks:
+  
+  # WP-CLI
+  - name: Install the WP-CLI
+    become: yes
+    get_url:
+      url: "https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
+      dest: /usr/local/bin/wp
+      mode: 0755
+      force: yes
+        

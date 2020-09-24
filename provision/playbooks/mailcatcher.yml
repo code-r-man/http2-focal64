@@ -21,43 +21,36 @@
 
   tasks:
   
-  # INSTALL PHP
-  - name: Install PHP
-    apt:
+  # INSTALL MAILCATCHER AS ROOT
+  - name: Install mailcatcher
+    become: yes
+    gem:
+      name: mailcatcher
       state: latest
-      update_cache: yes
-      pkg:
-        - php
-        - php-cli
-        - php-fpm
-        - php-json
-        - php-pdo
-        - php-mysql
-        - php-zip
-        - php-gd 
-        - php-mbstring
-        - php-curl
-        - php-xml
-        - php-pear
-        - php-bcmath
-
-  # PHP CONFIG
-  - name: Update php.ini
+      user_install: no
+  - name: Add mailcatcher to service
+    become: yes
+    template:
+      src: templates/mailcatcher.service
+      dest: /etc/systemd/system/mailcatcher.service
+      mode: 0644
+  - name: Start mailcatcher
+    become: yes
+    service: name=mailcatcher enabled=yes state=started
+  - name: Update php.ini for mailcatcher
     become: yes
     lineinfile:
       dest: /etc/php/7.4/apache2/conf.d/99-vccw.ini
       create: yes
-      line: "{{ item.key }} = {{ item.value }}"
-    with_dict: "{{ php_ini }}"
+      line: "sendmail_path = /usr/bin/env catchmail"
     notify:
       - restart apache
-  - name: Update php.ini for cli
+  - name: Update php.ini for mailcatcher for cli
     become: yes
     lineinfile:
       dest: /etc/php/7.4/cli/conf.d/99-vccw.ini
       create: yes
-      line: "{{ item.key }} = {{ item.value }}"
-    with_dict: "{{ php_ini }}"
+      line: "sendmail_path = /usr/bin/env catchmail"
 
   handlers:
     - name: restart apache

@@ -1,8 +1,5 @@
 - hosts: all
   become: yes
-  vars:
-    hostname: dev.wordpress
-    document_root: /var/www/html
 
   tasks:
   # APACHE2

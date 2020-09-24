@@ -1,8 +1,6 @@
 - hosts: all
   become: yes
   vars:
-    hostname: dev.wordpress
-    document_root: /var/www/html
     mysql_root_pass: wordpress
 
   tasks:
@@ -34,9 +32,8 @@
       name: mysql
       state: started
       enabled: true
+    notify: restart mysql
 
-  # handlers:
-  #   - name: restart apache
-  #     action: service name=apache2 state=restarted
-  #   - name: restart mysql
-  #     action: service name=mysql state=restarted
+  handlers:
+    - name: restart mysql
+      action: service name=mysql state=restarted

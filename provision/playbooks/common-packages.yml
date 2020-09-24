@@ -14,4 +14,5 @@
         - libsqlite3-dev
         - net-tools
         - software-properties-common
+        - ruby-full
         

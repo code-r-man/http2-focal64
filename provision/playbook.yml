@@ -21,3 +21,10 @@
 # =============================================================================
 # 2.1 Composer
 - import_playbook: playbooks/composer.yml
+
+# 2.2 WP-CLI
+- import_playbook: playbooks/wp-cli.yml
+
+# 2.3 Mailcatcher
+- import_playbook: playbooks/mailcatcher.yml
+

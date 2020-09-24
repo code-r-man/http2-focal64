@@ -1,7 +1,7 @@
 - hosts: all
   become: yes
   vars:
-    hostname: dev.wordpress
+    settings.hostname: dev.wordpress
     document_root: /var/www/html
 
   tasks:
@@ -17,7 +17,7 @@
   # variable
   - name: Check if the key file already exists
     stat:
-      path: /etc/apache2/ssl/{{ hostname }}.key
+      path: /etc/apache2/ssl/{{ settings.hostname }}.key
     register: key
 
   # Creates a private key
@@ -27,17 +27,17 @@
      -algorithm RSA \
      -pkeyopt rsa_keygen_bits:2048 \
      -pkeyopt rsa_keygen_pubexp:65537 \
-     -out /etc/apache2/ssl/{{ hostname }}.key
+     -out /etc/apache2/ssl/{{ settings.hostname }}.key
     when: not key.stat.exists
 
   # Create Certificate Sign request
   - name: Generate an OpenSSL Certificate Signing Request with Subject information
     become: yes
     shell: openssl req -new \
-     -key /etc/apache2/ssl/{{ hostname }}.key \
-     -out /etc/apache2/ssl/{{ hostname }}.csr \
+     -key /etc/apache2/ssl/{{ settings.hostname }}.key \
+     -out /etc/apache2/ssl/{{ settings.hostname }}.csr \
      -days 36500 \
-     -subj "/C=DE/ST=Berlin/L=Berlin/O=coderman/OU=IT/CN={{ hostname }}/emailAddress=admin@coderman.codes"
+     -subj "/C=DE/ST=Berlin/L=Berlin/O=coderman/OU=IT/CN={{ settings.hostname }}/emailAddress=admin@coderman.codes"
     when: not key.stat.exists
 
   # Setup CA certificate
@@ -104,8 +104,8 @@
       -config /home/vagrant/openssl.cnf \
       -cert /home/vagrant/cacert.pem \
       -keyfile /home/vagrant/cakey.pem \
-      -in /etc/apache2/ssl/{{ hostname }}.csr \
-      -out /etc/apache2/ssl/{{ hostname }}.crt
+      -in /etc/apache2/ssl/{{ settings.hostname }}.csr \
+      -out /etc/apache2/ssl/{{ settings.hostname }}.crt
     when: not key.stat.exists
 
   # Configure mutex for apache
