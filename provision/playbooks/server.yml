@@ -1,0 +1,88 @@
+- hosts: all
+  become: yes
+  tasks:
+
+  # APACHE2
+  - name: Install apache2 server
+    apt:
+      pkg: apache2
+      state: latest
+
+  # APACHE2 MODULES
+  - name: Activate module rewrite (apache2)
+    apache2_module:
+      state: present
+      name: rewrite
+  - name: Activate module ssl (apache2)
+    apache2_module:
+      state: present
+      name: ssl
+  # # Flynt requirements
+  - name: Activate module expires (apache2)
+    apache2_module:
+      state: present
+      name: expires
+  - name: Activate module headers (apache2)
+    apache2_module:
+      state: present
+      name: headers
+  - name: Activate module mime (apache2)
+    apache2_module:
+      state: present
+      name: mime
+  - name: Activate module env (apache2)
+    apache2_module:
+      state: present
+      name: env
+  - name: Activate module filter (apache2)
+    apache2_module:
+      state: present
+      name: filter
+  - name: Activate module deflate (apache2)
+    apache2_module:
+      state: present
+      name: deflate
+  - name: Activate module alias (apache2)
+    apache2_module:
+      state: present
+      name: alias
+  - name: Activate module actions (apache2)
+    apache2_module:
+      state: present
+      name: actions
+  - name: Activate module auth_basic (apache2)
+    apache2_module:
+      state: present
+      name: auth_basic
+  - name: Activate module proxy (apache2)
+    apache2_module:
+      state: present
+      name: proxy
+  - name: Activate module proxy_fcgi (apache2)
+    apache2_module:
+      state: present
+      name: proxy_fcgi
+  - name: Activate module setenvif (apache2)
+    apache2_module:
+      state: present
+      name: setenvif
+  # Flynt requirements ./end
+
+
+  # START APACHE2
+  - name: Make sure apache is running
+    service:
+      name: apache2
+      state: started
+      enabled: true
+
+  # RELOAD APACHE2
+  - name: Reload apache configuration
+    command: systemctl restart apache2
+    become: yes
+
+  handlers:
+    - name: restart-apache
+      action: service name=apache2 state=restarted
+    - name: restart-mysql
+      action: service name=mysql state=restarted
